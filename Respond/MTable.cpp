@@ -202,6 +202,9 @@ std::string MTable::makeSentence(const std::string& str)const{
 				//next1が絶望的
 				checked1.insert(next1);
 				if (checked1.size() == middleTable.find(str)->second.size()) return "";	//与えられた単語での文生成不可能
+			}else{
+				//文生成成功
+				return res1+res2;
 			}
 		}
 		else {
@@ -215,5 +218,4 @@ std::string MTable::makeSentence(const std::string& str)const{
     //std::string s2=forwardTable.at(std::make_pair(str, p.second))[dist2(mtRand)];
     //std::cout<<"makeSentence()"<<std::endl;
 	//extendSentenceBack(p.first,str)+extendSentence(p.second, s2)
-    return res1+res2;
 }
