@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bungo_2008", "makeTable\makeTable.vcproj", "{4D687B04-E81B-46EE-ABB0-0628644B7A96}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Respond", "Respond\Respond.vcproj", "{F7D1B6A0-AAD7-4678-8C28-BF154B2DCBF1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "extractWords", "extractWords\extractWords.vcproj", "{7073915C-4DDE-47FC-9EFA-489D5F69B986}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D687B04-E81B-46EE-ABB0-0628644B7A96}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4D687B04-E81B-46EE-ABB0-0628644B7A96}.Debug|Win32.Build.0 = Debug|Win32
+		{4D687B04-E81B-46EE-ABB0-0628644B7A96}.Release|Win32.ActiveCfg = Release|Win32
+		{4D687B04-E81B-46EE-ABB0-0628644B7A96}.Release|Win32.Build.0 = Release|Win32
+		{F7D1B6A0-AAD7-4678-8C28-BF154B2DCBF1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F7D1B6A0-AAD7-4678-8C28-BF154B2DCBF1}.Debug|Win32.Build.0 = Debug|Win32
+		{F7D1B6A0-AAD7-4678-8C28-BF154B2DCBF1}.Release|Win32.ActiveCfg = Release|Win32
+		{F7D1B6A0-AAD7-4678-8C28-BF154B2DCBF1}.Release|Win32.Build.0 = Release|Win32
+		{7073915C-4DDE-47FC-9EFA-489D5F69B986}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7073915C-4DDE-47FC-9EFA-489D5F69B986}.Debug|Win32.Build.0 = Debug|Win32
+		{7073915C-4DDE-47FC-9EFA-489D5F69B986}.Release|Win32.ActiveCfg = Release|Win32
+		{7073915C-4DDE-47FC-9EFA-489D5F69B986}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
