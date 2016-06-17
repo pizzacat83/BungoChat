@@ -95,8 +95,9 @@ int main(void){
 int main(){
 	srand((unsigned) time(NULL));
     //mtRand=std::mt19937(devRand());
-    Character sensei("F:\\aozora\\kokoro\\kokoro.markov");
+    Character * sensei = new Character("F:\\aozora\\kokoro\\kokoro.markov");
     //std::cout<<mt.startSentence("下人")<<std::endl;
-	std::cout<<sensei.Respond("私")<<std::endl;
+	std::cout<<sensei~>Respond("私")<<std::endl;
+	delete sensei;
     return 0;
 }
