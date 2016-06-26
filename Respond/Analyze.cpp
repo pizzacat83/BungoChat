@@ -25,7 +25,7 @@ void Analyze::AnalyzeString(const std::string& input){
     //CHECK(BOSnode);
 }
 
-std::vector<std::string> Analyze::extractNoun(){
+std::vector<std::string> Analyze::extractNoun()const{
     std::vector<std::string> res;
 	for(const MeCab::Node * node = BOSnode; node; node=node->next){
 		if(isNoun(node))res.push_back(std::string(node->surface).substr(0,node->length));
@@ -33,7 +33,7 @@ std::vector<std::string> Analyze::extractNoun(){
 	return res;
 }
 
-std::vector<std::string> Analyze::extractIndependent(){
+std::vector<std::string> Analyze::extractIndependent()const{
     std::vector<std::string> res;
 	for(const MeCab::Node * node = BOSnode; node; node=node->next){
 		if(isIndependent(node))res.push_back(std::string(node->surface).substr(0,node->length));
@@ -41,7 +41,7 @@ std::vector<std::string> Analyze::extractIndependent(){
 	return res;
 }
 
-bool Analyze::isIndependent(const MeCab::Node * node){
+bool Analyze::isIndependent(const MeCab::Node * node)const{
 	if((10<=node->posid&&node->posid<=12)||(31<=node->posid))return true;
 	else return false;
 }
@@ -49,7 +49,7 @@ bool Analyze::isIndependent(const MeCab::Node * node){
 
 
 
-bool Analyze::isNoun(const MeCab::Node * node){
+bool Analyze::isNoun(const MeCab::Node * node)const{
 	if(36<=node->posid&&node->posid<=67)return true;
 	else return false;
 }
