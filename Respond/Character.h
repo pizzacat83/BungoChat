@@ -9,7 +9,7 @@ class Character{
 private:
     MTable mtable;
 	Analyze analyzer;
-	std::string respondMarkov(const std::string& word);
+	std::string respondMarkov(const std::vector<std::string>& words)const;
 public:
     Character();
 	~Character();
