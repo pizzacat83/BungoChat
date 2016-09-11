@@ -1,3 +1,9 @@
+/*requires:
+#include <map>
+#include <string>
+#include <vector>
+*/
+
 class MTable{
 private:
     std::map<std::pair<std::string,std::string>,std::vector<std::string>> forwardTable;
