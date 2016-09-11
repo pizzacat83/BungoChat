@@ -3,3 +3,4 @@
 BuildLog.htm
 *.manifest
 *.zip
+*.pyc
