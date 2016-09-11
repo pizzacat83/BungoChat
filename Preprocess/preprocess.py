@@ -44,6 +44,7 @@ rmvexpl='-x' in sys.argv    #冒頭と末尾の本文でない部分を除去
 rmvnote='-n' in sys.argv    #注を除去
 rmvbrk='-b' in sys.argv     #「」（）の含まれる文を除去
 rmveudc='-c' in sys.argv    #外字の含まれる文を除去
+extwords='-w' in sys.argv   #セリフ(「」『』内の文章)を抽出
 #rpleudc='-d' in sys.argv    #未実装
 
 if '--aozora' in sys.argv:
@@ -56,6 +57,15 @@ if '--aozora' in sys.argv:
     rmvnote=True
     rmvbrk=True
 
+if '--extserif' in sys.argv:
+    rmvrtrn=True
+    rmvhead=True
+    rmvrby=True
+    rmvexpl=True
+    rmvnote=True
+    rmveudc=True
+    extwords=True
+
 #if rpleudc:
 #    sys.stderr.write('Error:option -c is not available.')
 
@@ -65,6 +75,7 @@ reeudc=re.compile(ur'(.*)((。|^).*?※［＃「.+?」.*?、.+?］.*?(。|$))')
 renote=re.compile(ur'［＃.+?］')
 reexpl=re.compile(ur'''\A.+?-------------------------------------------------------.+?-------------------------------------------------------(.+)底本：.+\Z''', re.M|re.S)
 rebrk=[re.compile(ur'(.*)((。|^).*?「.*?」.*?(。|$))'), re.compile(ur'(.*)((。|^).*?（.*?）.*?(。|$))'),re.compile(ur'(.*)((。|^).*?『.*?』.*?(。|$))')]
+reserif=[re.compile(ur'「.+?」'), re.compile(ur'『.+?』')]
 
 """
 cnvk 0.9.3 - 全角・半角・ひらがな・カタカナ等を変換する簡単なモジュールです
@@ -257,11 +268,16 @@ for line in [s+('' if rmvrtrn else '\n') for s in src.split('\n')]:
                 line=r.sub(ur'\1\3',line,count=1)
                 #print u'after:', line.encode('utf-8')
                 #print''
-
     if appprd:
         if len(line)==0:
             continue
         if line[-1]!=u'。':
             #print 'no period'
             line+=u'。'
+    if extwords:
+        tmpl=''
+        for r in reserif:
+            tmpl+='\n'.join([s[1:-1] for s in r.findall(line)])
+        tmpl+='\n' if tmpl!='' else ''
+        line=tmpl
     sys.stdout.write(line.encode('shift-jis'))
