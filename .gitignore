@@ -4,3 +4,5 @@ BuildLog.htm
 *.manifest
 *.zip
 *.pyc
+.vscode/.browse.VC.db
+.vscode/.browse.VC.db-wal
