@@ -181,9 +181,9 @@ std::string MTable::makeSentence(const std::string& str)const{
 			std::set<int> checked2;
 			//std::uniform_int_distribution<int> dist2(0, forwardTable.at(p1).size()-1);
 			while (true) {
-				int next2 = /*dist2(mtRand)*/rand()%forwardTable.find(p1)->second.size();
-				if (checked2.count(next2))continue;
 				std::pair<std::string,std::string> p2=std::make_pair(str, s2);
+				int next2 = /*dist2(mtRand)*/rand()%forwardTable.find(p2)->second.size();
+				if (checked2.count(next2))continue;
 				std::string s3 = forwardTable.find(p2)->second[next2];
 				std::pair<std::string,std::string> p3=std::make_pair(s2, s3);
 				res2 = extendSentence(s2, s3);
