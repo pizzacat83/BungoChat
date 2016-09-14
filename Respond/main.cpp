@@ -8,6 +8,7 @@
 #include <Mecab.h>
 #include "MTable.h"
 #include "Analyze.h"
+#include "RuleBase.h"
 #include "Character.h"
 #include "Main.h"
 
