@@ -1,4 +1,8 @@
 #pragma once
+/*requires:
+#include <vector>
+#include <string>
+*/
 
 class RuleBase
 {
