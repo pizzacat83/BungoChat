@@ -1,0 +1,31 @@
+a   相槌
+b   質問をはぐらかす
+c   what
+d   who
+e   when
+f   where
+g   why
+h   how
+i   yes/no
+j   発話
+k   ユーザーに質問
+l   無言
+m
+n
+o
+p
+q
+r
+s
+t
+u
+v
+w
+x
+y
+z
+A   "名前"
+B   "邪魔"
+C   "どれくらい"
+D   "帰る"
+E   "こんにちは"

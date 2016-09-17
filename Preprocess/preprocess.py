@@ -277,7 +277,7 @@ for line in [s+('' if rmvrtrn else '\n') for s in src.split('\n')]:
     if extwords:
         tmpl=''
         for r in reserif:
-            tmpl+='\n'.join([s[1:-1] for s in r.findall(line)])
+            tmpl+='\n'.join(['\t'+s[1:-1] for s in r.findall(line)])
         tmpl+='\n' if tmpl!='' else ''
         line=tmpl
     sys.stdout.write(line.encode('shift-jis'))
