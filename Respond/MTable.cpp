@@ -61,6 +61,26 @@ void MTable::loadTableRow(const std::string& line){
     //forward[std::make_pair(std::move(s0),std::move(s1))]=std::move(row);
 }
 
+std::string MTable::respondMarkov(const std::vector<std::string>& words)const{
+	std::string res;
+	std::set<int> checked;
+	while(true){
+		int next = rand()%words.size();
+		if (checked.count(next))continue;	//既に調べた単語
+		res = makeSentence(words[next]);
+		if (!res.empty()) {
+			//文生成成功
+			break;
+		}
+		else {
+			//nextの単語では文を続けられない
+			checked.insert(next);
+			if (checked.size() == words.size()) return "";	//与えられた単語での文生成不可能
+		}
+	}
+	return res;
+}
+
 std::string MTable::extendSentence(const std::string& s1, const std::string& s2)const{
     if(s2=="。")return s1;	//文の終わり
 	std::pair<std::string,std::string> p=std::make_pair(s1,s2);

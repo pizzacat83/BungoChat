@@ -4,13 +4,13 @@
 #include <vector>
 #include <string>
 #include "MTable.h"
+#include "RuleBase.h"
 */
 class Character{
 private:
     MTable mtable;
 	Analyze analyzer;
 	RuleBase rulebase;
-	std::string respondMarkov(const std::vector<std::string>& words)const;
 public:
     Character();
 	~Character();

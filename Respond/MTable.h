@@ -27,4 +27,5 @@ public:
     std::string startSentence(const std::string& str)const;
     std::string makeSentenceRand()const;
     std::string makeSentence(const std::string& str)const;
+	std::string respondMarkov(const std::vector<std::string>& words)const;
 };
