@@ -1,4 +1,4 @@
-#include <vector>
+﻿#include <vector>
 #include <string>
 #include <fstream>
 #include <random>
@@ -34,5 +34,20 @@ std::string RuleBase::randomChoice(){
 	return serifs[t];
 }
 
+void widen(const std::string &src, std::wstring &dest) {
+	wchar_t *wcs = new wchar_t[src.length() + 1];
+	mbstowcs(wcs, src.c_str(), src.length() + 1);
+	dest = wcs;
+	delete [] wcs;
+}
+
 std::string RuleBase::replyByWord(const std::string &input, const std::vector<std::string> &words){
-	std::regex re("(.+)(�Ƃ�|����)(��)?(��|�ł�)?(��)?(//?|�H)?");
+	//std::regex re("(.+)(とは|って)(何)?(だ|です)?(か)?(//?|？)?");*/
+	std::tr1::wregex re(L"((あなた|貴方|アナタ|君|きみ|キミ|お前|おまえ|てめえ|てめー|テメー|手前|おめえ|貴様|きさま|あんた|アンタ)(の)?)?(お|御)?(名前|なまえ|名)(((は|って)?(何(なん)?(だ|((です|でしょう|である|であります|でありましょう)(か?)))?)?)|((を)?(教え|おしえ)((て|ろ)(ください|くれ)?(さ|ね|よ|よね)?|よ)))(\\?|？|。)?");
+	std::wstring winput;
+	widen(input,winput);
+	if(std::tr1::regex_match(winput,re)){
+		return"名前はまだ無い。";
+	}
+	return "";
+}
