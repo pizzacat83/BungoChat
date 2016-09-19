@@ -80,14 +80,14 @@ std::string RuleBase::replyByWord(const std::string &input, const std::vector<st
 	std::wstring whentype;
 	for(std::vector<regexset>::iterator it=re.begin(); it!=re.end(); ++it){
 		if(it->type=='m'){
-			re|=int(std::tr1::regex_match(winput,re))<<it->signum;
+			res|=int(std::tr1::regex_match(winput,re))<<it->signum;
 		}
 		if(it->type=='s'){
-			re|=int(std::tr1::regex_search(winput,re))<<it->signum;
+			res|=int(std::tr1::regex_search(winput,re))<<it->signum;
 		}
 		if(it->type=='t'){
 			std::tr1::match_results<std::wstring> matches;
-			re|=int(std::tr1::regex_search(winput,re,matches)<<it->signum;
+			res|=int(std::tr1::regex_search(winput,re,matches)<<it->signum;
 			whentype=matches.str(1);
 			if(whentype==L"いつ")whentype="";
 			else whentype.substr(1);
