@@ -26,7 +26,9 @@ RuleBase::~RuleBase(void)
 std::string RuleBase::respondRuleBase(const std::string& input, const std::vector<std::string>& words){
 	/*return randomChoice();*/
 	std::string res=replyByWord(input,words);
-	return res!=""?res:randomChoice();
+	if(res!="")return res;
+	if(rand()&1)return "";
+	return randomChoice();
 }
 
 std::string RuleBase::randomChoice(){
