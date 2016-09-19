@@ -93,7 +93,15 @@ std::string RuleBase::replyByWord(const std::string &input, const std::vector<st
 			else whentype.substr(1);
 		}
 	}
-
+if(res&0x1fc){
+  //質問された
+  if(!serifs[1].empty()){
+    len=serifs[1].size();
+    int t=rand()%len;
+    return serifs[1][t];
+  }
+}
+  
 
 	return "";
 }
