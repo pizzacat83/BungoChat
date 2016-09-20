@@ -7,3 +7,12 @@ BuildLog.htm
 .vscode/.browse.VC.db
 .vscode/.browse.VC.db-wal
 *.res
+*.ncb
+*.suo
+*.exe
+*.ilk
+*.pdb
+*.dll
+*.obj
+*.user
+*.lib
