@@ -4,6 +4,7 @@
 #include <random>
 #include <set>
 #include <mecab.h>
+#include <regex>
 #include "MTable.h"
 #include "Analyze.h"
 #include "RuleBase.h"
@@ -12,7 +13,7 @@
 Character::Character(void){
 }
 
-Character::Character(const std::string& MTablePath, const std::string& RuleBasePath):mtable(MTablePath), rulebase(RuleBasePath){
+Character::Character(const std::string& MTablePath, const std::string& RegexPath, const std::string& SerifPath):mtable(MTablePath), rulebase(RegexPath, SerifPath){
 }
 
 Character::~Character(void){

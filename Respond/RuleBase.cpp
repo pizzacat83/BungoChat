@@ -6,17 +6,27 @@
 #include <tuple>
 #include "RuleBase.h"
 
+void widen(const std::string &src, std::wstring &dest) {
+	wchar_t *wcs = new wchar_t[src.length() + 1];
+	mbstowcs(wcs, src.c_str(), src.length() + 1);
+	dest = wcs;
+	delete [] wcs;
+}
+
+
 RuleBase::RuleBase(void)
 {
 }
 
 RuleBase::RuleBase(const std::string &regexpath, const std::string& serifpath):serifs(52)
 {
+	LoadRegex(regexpath);
+	LoadSerif(serifpath);
 	
 }
 
 int sigtonum(char c){
-	return std::islower(c)?c-'a':26+c-'A';
+	return islower(c)?c-'a':26+c-'A';
 }
 
 void RuleBase::LoadRegex(const std::string& regexpath){
@@ -55,15 +65,9 @@ std::string RuleBase::respondRuleBase(const std::string& input, const std::vecto
 
 std::string RuleBase::randomChoice(){
 	int t = rand()%serifs.size();
-	return serifs[t];
+	return serifs[0][t];
 }
 
-void widen(const std::string &src, std::wstring &dest) {
-	wchar_t *wcs = new wchar_t[src.length() + 1];
-	mbstowcs(wcs, src.c_str(), src.length() + 1);
-	dest = wcs;
-	delete [] wcs;
-}
 
 
 std::string RuleBase::replyByWord(const std::string &input, const std::vector<std::string> &words){
@@ -80,23 +84,23 @@ std::string RuleBase::replyByWord(const std::string &input, const std::vector<st
 	std::wstring whentype;
 	for(std::vector<regexset>::iterator it=re.begin(); it!=re.end(); ++it){
 		if(it->type=='m'){
-			res|=int(std::tr1::regex_match(winput,re))<<it->signum;
+			res|=int(std::tr1::regex_match(winput,it->re))<<it->signum;
 		}
 		if(it->type=='s'){
-			res|=int(std::tr1::regex_search(winput,re))<<it->signum;
+			res|=int(std::tr1::regex_search(winput,it->re))<<it->signum;
 		}
 		if(it->type=='t'){
-			std::tr1::match_results<std::wstring> matches;
-			res|=int(std::tr1::regex_search(winput,re,matches)<<it->signum;
+			std::tr1::wsmatch matches;
+			res|=int(std::tr1::regex_search(winput,matches,it->re))<<it->signum;
 			whentype=matches.str(1);
-			if(whentype==L"いつ")whentype="";
+			if(whentype==L"いつ")whentype=L"";
 			else whentype.substr(1);
 		}
 	}
 if(res&0x1fc){
   //質問された
   if(!serifs[1].empty()){
-    len=serifs[1].size();
+    int len=serifs[1].size();
     int t=rand()%len;
     return serifs[1][t];
   }

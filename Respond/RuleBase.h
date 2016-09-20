@@ -22,7 +22,7 @@ private:
 	std::string replyByWord(const std::string& input, const std::vector<std::string>& words);
 public:
 	RuleBase(void);
-	RuleBase(const std::string &regexpath, const srd::string &serifpath);
+	RuleBase(const std::string &regexpath, const std::string &serifpath);
 	~RuleBase(void);
 	std::string respondRuleBase(const std::string& input, const std::vector<std::string>& words);
 };

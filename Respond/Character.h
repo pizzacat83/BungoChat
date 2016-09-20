@@ -14,6 +14,6 @@ private:
 public:
     Character();
 	~Character();
-	Character(const std::string& MTablePath, const std::string& RuleBasePath);
+	Character(const std::string& MTablePath, const std::string& RegexPath, const std::string& SerifPath);
     std::string Respond(const std::string& input);
 };
