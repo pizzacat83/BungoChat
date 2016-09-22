@@ -82,7 +82,7 @@ RuleBase::~RuleBase(void)
 std::string RuleBase::respondRuleBase(const std::string& input, const std::vector<std::string>& words){
 	/*return randomChoice();*/
 	std::string res=replyByWord(input,words);
-	if(res!="")return res;
+	if(!res.empty())return res;
 	if(!(rand()%6))return randomChoice();
 	return "";
 }
@@ -90,6 +90,61 @@ std::string RuleBase::respondRuleBase(const std::string& input, const std::vecto
 std::string RuleBase::randomChoice(){
 	int t = rand()%serifs[0].size();
 	return serifs[0][t];
+}
+
+
+
+std::wstring NumtoCHNwstr(int i){
+	//60未満
+	std::wstring res;
+	switch(i/10){
+		case 5:
+			res+=L"五十";
+			break;
+		case 4:
+			res+=L"四十";
+			break;
+		case 3:
+			res+=L"三十";
+			break;
+		case 2:
+			res+=L"二十";
+			break;
+		case 1:
+			res+=L"十";
+			break;
+	}
+	switch(i%10){
+		case 9:
+			res+=L"九";
+			break;
+		case 8:
+			res+=L"八";
+			break;
+		case 7:
+			res+=L"七";
+			break;
+		case 6:
+			res+=L"六";
+			break;
+		case 5:
+			res+=L"五";
+			break;
+		case 4:
+			res+=L"四";
+			break;
+		case 3:
+			res+=L"三";
+			break;
+		case 2:
+			res+=L"二";
+			break;
+		case 1:
+			res+=L"一";
+			break;
+	}
+	if(res.empty())res=L"零";
+	return res;
 }
 
 
@@ -117,23 +172,74 @@ std::string RuleBase::replyByWord(const std::string &input, const std::vector<st
 			std::tr1::wsmatch matches;
 			res|=int(std::tr1::regex_search(winput,matches,it->re))<<it->signum;
 			whentype=matches.str(1);
-			if(whentype==L""||whentype==L"いつ")whentype=L"";
+			if(whentype==L"いつ")whentype=L"";
 			else whentype = whentype.substr(1);
 		}
 	}
 	/*if(res&(1<<('i'-'a'))){
 		
 	}*/
+	std::tr1::wregex tre(L"^(.*)\\[when\\](.*)$");
 	
 	if(res&0x1fc){
 	//質問された
 		for(int i = 2; i<9; ++i){
-			if(res&(long long(1)<<i)){
+			if((res&(long long(1)<<i))&&!serifs[i].empty()){
+			
 				int len=serifs[i].size();
-				int limit = int(RAND_MAX*atan(float(len)/30)/acos(0.0));
-				if(rand()<limit){
-					//既定の答えを返す
-					return serifs[i][rand()%len];
+				int limit=int(RAND_MAX*atan(float(len)/30)/acos(0.0));
+				if(/*rand()<limit*/true){
+					if(i==4){
+						int serifidx=rand()%len;
+						std::string serif=serifs[i][serifidx];
+						std::string::size_type pos=serif.find("[timeunit]");
+						if(pos!=std::string::npos&&!whentype.empty()){
+							std::string swhentype;
+							narrow(whentype, swhentype);
+							return serif.replace(pos, strlen("[timeunit]"), swhentype);
+						}
+						std::wstring wserif;
+						widen(serif,wserif);
+						if(std::tr1::regex_match(wserif, tre)){
+							//[when]の置換
+							if(whentype.find(L"時")!=std::wstring::npos){
+								int time=(rand()%36)%24;
+								std::wstring wstrtime=NumtoCHNwstr(time);
+								std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
+								std::string sres;
+								narrow(wres,sres);
+								return sres;
+							}
+							if(whentype.find(L"分")!=std::wstring::npos||whentype.find(L"秒")!=std::wstring::npos){
+								int time=rand()%60;
+								std::wstring wstrtime=NumtoCHNwstr(time);
+								std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
+								std::string sres;
+								narrow(wres,sres);
+								return sres;
+							}
+							if(whentype.find(L"日")!=std::wstring::npos){
+								int time=rand()%31;
+								std::wstring wstrtime=NumtoCHNwstr(time);
+								std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
+								std::string sres;
+								narrow(wres,sres);
+								return sres;
+							}
+							if(whentype.find(L"月")!=std::wstring::npos){
+								int time=rand()%12;
+								std::wstring wstrtime=NumtoCHNwstr(time);
+								std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
+								std::string sres;
+								narrow(wres,sres);
+								return sres;
+							}
+						}else{
+							return serifs[i][serifidx];
+						}
+					}else{
+						return serifs[i][rand()%len];
+					}
 				}
 			}
 		}
@@ -143,7 +249,6 @@ std::string RuleBase::replyByWord(const std::string &input, const std::vector<st
 			if(!(rand()%6))return serifs[1][t];
 		}
 	}
-  
 
 	return "";
 }
