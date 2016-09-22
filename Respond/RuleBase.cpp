@@ -256,20 +256,22 @@ std::string RuleBase::replyByWord(const std::string &input, const std::vector<st
 		if(!sres.empty())return sres;
 	}
 
-	if(res&(1<<11)&&!serifs[10].empty()){
-		//無言
-		int len=serifs[10].size();
-		int limit=int(RAND_MAX*atan(float(len)/20)/acos(0.0));
-		if(rand()<limit){
-			return serifs[10][rand()%len];
+	if(res&(1<<11)){
+		if(!serifs[11].empty()){
+			//無言
+			int len=serifs[11].size();
+			int limit=int(RAND_MAX*atan(float(len)/15)/acos(0.0));
+			if(rand()<limit){
+				return serifs[11][rand()%len];
+			}
 		}
-	}
-	if(res&(1<<11)&&!serifs[11].empty()){
-		//無言
-		int len=serifs[11].size();
-		int limit=int(RAND_MAX*atan(float(len)/10)/acos(0.0));
-		if(rand()<limit){
-			return serifs[11][rand()%len];
+		if(!serifs[10].empty()){
+			//無言
+			int len=serifs[10].size();
+			int limit=int(RAND_MAX*atan(float(len)/20)/acos(0.0));
+			if(/*rand()<limit*/true){
+				return serifs[10][rand()%len];
+			}
 		}
 	}
 
