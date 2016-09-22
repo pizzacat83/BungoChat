@@ -83,11 +83,12 @@ std::string RuleBase::respondRuleBase(const std::string& input, const std::vecto
 	/*return randomChoice();*/
 	std::string res=replyByWord(input,words);
 	if(!res.empty())return res;
-	if(!(rand()%6))return randomChoice();
+	if(!(rand()%4))return randomChoice();
 	return "";
 }
 
 std::string RuleBase::randomChoice(){
+	if(serifs[0].empty())return "";
 	int t = rand()%serifs[0].size();
 	return serifs[0][t];
 }
