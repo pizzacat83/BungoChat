@@ -275,5 +275,12 @@ std::string RuleBase::replyByWord(const std::string &input, const std::vector<st
 		}
 	}
 
+	for(int i=26; i<52; i++){
+		if((res&(long long(1)<<i))&&!serifs[i].empty()){
+			int len=serifs[i].size();
+			return serifs[i][rand()%len];
+		}
+	}
+
 	return "";
 }
