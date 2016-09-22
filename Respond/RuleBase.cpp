@@ -154,7 +154,7 @@ std::string RuleBase::replyQuery(long long querybit, std::wstring whentype){
 		if((querybit&(long long(1)<<i))&&!serifs[i].empty()){
 		
 			int len=serifs[i].size();
-			int limit=int(RAND_MAX*atan(float(len)/30)/acos(0.0));
+			int limit=int(RAND_MAX*atan(float(len)/20)/acos(0.0));
 			if(rand()<limit){
 				if(i==4){
 					int serifidx=rand()%len;
@@ -162,8 +162,8 @@ std::string RuleBase::replyQuery(long long querybit, std::wstring whentype){
 					std::string::size_type pos=serif.find("[timeunit]");
 					if(pos!=std::string::npos&&!whentype.empty()){
 						std::string swhentype;
-						narrow(whentype, swhentype);
-						return serif.replace(pos, strlen("[timeunit]"), swhentype);
+						narrow(whentype.substr(0,swhentype.size()-1), swhentype);
+						return serif.replace(pos, strlen("[timeunit]"),swhentype);
 					}
 					std::wstring wserif;
 					widen(serif,wserif);
@@ -172,7 +172,7 @@ std::string RuleBase::replyQuery(long long querybit, std::wstring whentype){
 						if(whentype.find(L"時")!=std::wstring::npos){
 							int time=(rand()%36)%24;
 							std::wstring wstrtime=NumtoCHNwstr(time);
-							std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
+							std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+((rand()%16)?L"半":L"")+L"$2");
 							std::string sres;
 							narrow(wres,sres);
 							return sres;
