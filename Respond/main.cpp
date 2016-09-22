@@ -18,7 +18,7 @@ int main(){
 	setlocale(LC_CTYPE, "");
 	srand((unsigned) time(NULL));
     //mtRand=std::mt19937(devRand());
-	Character * sensei = new Character(std::string("F:\\Programming\\Desktop\\cpp\\Bungo\\Bungo_2008\\aozora\\kokoro\\kokoro.markov"), "F:\\Programming\\Desktop\\cpp\\Bungo\\Bungo_2008\\Respond\\RuleBasePatterns.rx" , std::string("F:\\Programming\\Desktop\\cpp\\Bungo\\Bungo_2008\\aozora\\kokoro\\kokoro_serif.txt"));
+	Character * sensei = new Character(std::string("F:\\Programming\\Desktop\\cpp\\Bungo\\Bungo_2008\\aozora\\kokoro\\kokoro.markov"), "F:\\Programming\\Desktop\\cpp\\Bungo\\Bungo_2008\\Respond\\RuleBasePatterns.rx" , std::string("F:\\Programming\\Desktop\\cpp\\Bungo\\Bungo_2008\\aozora\\haguruma\\haguruma_serif.txt"));
     //std::cout<<mt.startSentence("下人")<<std::endl;
 	while(1){
 		std::string line;
