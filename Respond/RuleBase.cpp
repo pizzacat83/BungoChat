@@ -147,6 +147,76 @@ std::wstring NumtoCHNwstr(int i){
 	return res;
 }
 
+std::string RuleBase::replyQuery(long long querybit, std::wstring whentype){
+	std::tr1::wregex tre(L"^(.*)\\[when\\](.*)$");
+
+	for(int i = 2; i<9; ++i){
+		if((querybit&(long long(1)<<i))&&!serifs[i].empty()){
+		
+			int len=serifs[i].size();
+			int limit=int(RAND_MAX*atan(float(len)/30)/acos(0.0));
+			if(rand()<limit){
+				if(i==4){
+					int serifidx=rand()%len;
+					std::string serif=serifs[i][serifidx];
+					std::string::size_type pos=serif.find("[timeunit]");
+					if(pos!=std::string::npos&&!whentype.empty()){
+						std::string swhentype;
+						narrow(whentype, swhentype);
+						return serif.replace(pos, strlen("[timeunit]"), swhentype);
+					}
+					std::wstring wserif;
+					widen(serif,wserif);
+					if(std::tr1::regex_match(wserif, tre)){
+						//[when]の置換
+						if(whentype.find(L"時")!=std::wstring::npos){
+							int time=(rand()%36)%24;
+							std::wstring wstrtime=NumtoCHNwstr(time);
+							std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
+							std::string sres;
+							narrow(wres,sres);
+							return sres;
+						}
+						if(whentype.find(L"分")!=std::wstring::npos||whentype.find(L"秒")!=std::wstring::npos){
+							int time=rand()%60;
+							std::wstring wstrtime=NumtoCHNwstr(time);
+							std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
+							std::string sres;
+							narrow(wres,sres);
+							return sres;
+						}
+						if(whentype.find(L"日")!=std::wstring::npos){
+							int time=rand()%31;
+							std::wstring wstrtime=NumtoCHNwstr(time);
+							std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
+							std::string sres;
+							narrow(wres,sres);
+							return sres;
+						}
+						if(whentype.find(L"月")!=std::wstring::npos){
+							int time=rand()%12;
+							std::wstring wstrtime=NumtoCHNwstr(time);
+							std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
+							std::string sres;
+							narrow(wres,sres);
+							return sres;
+						}
+					}else{
+						return serifs[i][serifidx];
+					}
+				}else{
+					return serifs[i][rand()%len];
+				}
+			}
+		}
+	}
+	if(!serifs[1].empty()){
+		int len=serifs[1].size();
+		int t=rand()%len;
+		if(!(rand()%6))return serifs[1][t];
+	}
+	return "";
+}
 
 
 std::string RuleBase::replyByWord(const std::string &input, const std::vector<std::string> &words){
@@ -172,81 +242,34 @@ std::string RuleBase::replyByWord(const std::string &input, const std::vector<st
 			std::tr1::wsmatch matches;
 			res|=int(std::tr1::regex_search(winput,matches,it->re))<<it->signum;
 			whentype=matches.str(1);
-			if(whentype==L"いつ")whentype=L"";
+			if(whentype.empty()||whentype==L"いつ")whentype=L"";
 			else whentype = whentype.substr(1);
 		}
 	}
 	/*if(res&(1<<('i'-'a'))){
 		
 	}*/
-	std::tr1::wregex tre(L"^(.*)\\[when\\](.*)$");
 	
 	if(res&0x1fc){
 	//質問された
-		for(int i = 2; i<9; ++i){
-			if((res&(long long(1)<<i))&&!serifs[i].empty()){
-			
-				int len=serifs[i].size();
-				int limit=int(RAND_MAX*atan(float(len)/30)/acos(0.0));
-				if(/*rand()<limit*/true){
-					if(i==4){
-						int serifidx=rand()%len;
-						std::string serif=serifs[i][serifidx];
-						std::string::size_type pos=serif.find("[timeunit]");
-						if(pos!=std::string::npos&&!whentype.empty()){
-							std::string swhentype;
-							narrow(whentype, swhentype);
-							return serif.replace(pos, strlen("[timeunit]"), swhentype);
-						}
-						std::wstring wserif;
-						widen(serif,wserif);
-						if(std::tr1::regex_match(wserif, tre)){
-							//[when]の置換
-							if(whentype.find(L"時")!=std::wstring::npos){
-								int time=(rand()%36)%24;
-								std::wstring wstrtime=NumtoCHNwstr(time);
-								std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
-								std::string sres;
-								narrow(wres,sres);
-								return sres;
-							}
-							if(whentype.find(L"分")!=std::wstring::npos||whentype.find(L"秒")!=std::wstring::npos){
-								int time=rand()%60;
-								std::wstring wstrtime=NumtoCHNwstr(time);
-								std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
-								std::string sres;
-								narrow(wres,sres);
-								return sres;
-							}
-							if(whentype.find(L"日")!=std::wstring::npos){
-								int time=rand()%31;
-								std::wstring wstrtime=NumtoCHNwstr(time);
-								std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
-								std::string sres;
-								narrow(wres,sres);
-								return sres;
-							}
-							if(whentype.find(L"月")!=std::wstring::npos){
-								int time=rand()%12;
-								std::wstring wstrtime=NumtoCHNwstr(time);
-								std::wstring wres = std::tr1::regex_replace(wserif, tre, L"$1"+wstrtime+whentype+L"$2");
-								std::string sres;
-								narrow(wres,sres);
-								return sres;
-							}
-						}else{
-							return serifs[i][serifidx];
-						}
-					}else{
-						return serifs[i][rand()%len];
-					}
-				}
-			}
+		std::string sres=replyQuery(res, whentype);
+		if(!sres.empty())return sres;
+	}
+
+	if(res&(1<<11)&&!serifs[10].empty()){
+		//無言
+		int len=serifs[10].size();
+		int limit=int(RAND_MAX*atan(float(len)/20)/acos(0.0));
+		if(rand()<limit){
+			return serifs[10][rand()%len];
 		}
-		if(!serifs[1].empty()){
-			int len=serifs[1].size();
-			int t=rand()%len;
-			if(!(rand()%6))return serifs[1][t];
+	}
+	if(res&(1<<11)&&!serifs[11].empty()){
+		//無言
+		int len=serifs[11].size();
+		int limit=int(RAND_MAX*atan(float(len)/10)/acos(0.0));
+		if(rand()<limit){
+			return serifs[11][rand()%len];
 		}
 	}
 
