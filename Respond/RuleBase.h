@@ -20,6 +20,7 @@ private:
 	void LoadSerif(const std::string& serifpath);
 	std::string randomChoice();
 	std::string replyByWord(const std::string& input, const std::vector<std::string>& words);
+	std::string replyQuery(long long querybit, std::wstring whentype);
 public:
 	RuleBase(void);
 	RuleBase(const std::string &regexpath, const std::string &serifpath);
