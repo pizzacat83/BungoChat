@@ -28,12 +28,22 @@ RuleBase::RuleBase(void)
 
 RuleBase::RuleBase(const std::string &regexpath, const std::string& serifpath):serifs(52)
 {
+	prevword[0]=prevword[1]=-1;
 	LoadRegex(regexpath);
 	LoadSerif(serifpath);
 	
 }
 
-int sigtonum(char c){
+bool RuleBase::nextIsMarkov(){
+	if(prevword[0]=='j'-'a'){
+		prevword[0]=-1;
+		prevword[1]=-1;
+		return true;
+	}else return false;
+}
+
+
+inline int sigtonum(char c){
 	return islower(c)?c-'a':26+c-'A';
 }
 
@@ -83,13 +93,19 @@ std::string RuleBase::respondRuleBase(const std::string& input, const std::vecto
 	/*return randomChoice();*/
 	std::string res=replyByWord(input,words);
 	if(!res.empty())return res;
-	if(!(rand()%4))return randomChoice();
+	res=randomChoice();
+	if(!(rand()%3)&&!res.empty())return res;
+	prevword[0]=-1;
+	prevword[1]=-1;
 	return "";
 }
 
 std::string RuleBase::randomChoice(){
 	if(serifs[0].empty())return "";
 	int t = rand()%serifs[0].size();
+	if(prevword[0]==0&&prevword[1]==t)return "";
+	prevword[0]=0;
+	prevword[1]=t;
 	return serifs[0][t];
 }
 
@@ -159,6 +175,9 @@ std::string RuleBase::replyQuery(long long querybit, std::wstring whentype){
 			if(rand()<limit){
 				if(i==4){
 					int serifidx=rand()%len;
+					if(prevword[0]==i&&prevword[1]==serifidx)return "";
+					prevword[0]=i;
+					prevword[1]=serifidx;
 					std::string serif=serifs[i][serifidx];
 					std::string::size_type pos=serif.find("[timeunit]");
 					if(pos!=std::string::npos&&!whentype.empty()){
@@ -214,11 +233,32 @@ std::string RuleBase::replyQuery(long long querybit, std::wstring whentype){
 	if(!serifs[1].empty()){
 		int len=serifs[1].size();
 		int t=rand()%len;
+		if(prevword[0]==1&&prevword[1]==t)return "";
+		prevword[0]=1;
+		prevword[1]=t;
 		if(!(rand()%6))return serifs[1][t];
 	}
 	return "";
 }
 
+std::string RuleBase::replySilence(){
+	while(true){
+		for(int i = 9; i<12; i++){
+			if(!serifs[i].empty()){
+				//無言
+				int len=serifs[i].size();
+				int limit=int(RAND_MAX*atan(float(len)/20)/acos(0.0));
+				if(rand()<limit){
+					int t=rand()%len;
+					if(prevword[0]==i&&prevword[1]==t)continue;
+					prevword[0]=i;
+					prevword[1]=t;
+					return serifs[i][t];
+				}
+			}
+		}
+	}
+}
 
 std::string RuleBase::replyByWord(const std::string &input, const std::vector<std::string> &words){
 	
@@ -258,28 +298,18 @@ std::string RuleBase::replyByWord(const std::string &input, const std::vector<st
 	}
 
 	if(res&(1<<11)){
-		if(!serifs[11].empty()){
-			//無言
-			int len=serifs[11].size();
-			int limit=int(RAND_MAX*atan(float(len)/15)/acos(0.0));
-			if(rand()<limit){
-				return serifs[11][rand()%len];
-			}
-		}
-		if(!serifs[10].empty()){
-			//無言
-			int len=serifs[10].size();
-			int limit=int(RAND_MAX*atan(float(len)/20)/acos(0.0));
-			if(/*rand()<limit*/true){
-				return serifs[10][rand()%len];
-			}
-		}
+		return replySilence();
 	}
 
 	for(int i=26; i<52; i++){
 		if((res&(long long(1)<<i))&&!serifs[i].empty()){
 			int len=serifs[i].size();
-			return serifs[i][rand()%len];
+			int t=rand()%len;
+			if(prevword[0]==i&&prevword[1]==t)return "";
+
+			prevword[0]=i;
+			prevword[1]=t;
+			return serifs[i][t];
 		}
 	}
 

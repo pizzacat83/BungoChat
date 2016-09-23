@@ -24,10 +24,15 @@ Character::~Character(void){
 
 
 std::string Character::Respond(const std::string& input){
+	std::string res;
+	if(rulebase.nextIsMarkov()){
+		res=mtable.makeSentenceRand();
+	}
+	if(!res.empty())return res;
 	analyzer.AnalyzeString(input);
 	std::vector<std::string> words=analyzer.extractIndependent();//活用形をもっと豊富にしたいよね
 	/*if(words.empty())return rulebase.respondRuleBase(input,words);
-	std::string res = mtable.respondMarkov(words);
+	res = mtable.respondMarkov(words);
 	return res.empty()?rulebase.respondRuleBase(input,words):res;*/
 	return rulebase.respondRuleBase(input,words);
 }
