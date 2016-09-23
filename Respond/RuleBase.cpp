@@ -94,7 +94,7 @@ std::string RuleBase::respondRuleBase(const std::string& input, const std::vecto
 	std::string res=replyByWord(input,words);
 	if(!res.empty())return res;
 	res=randomChoice();
-	if(!(rand()%3)&&!res.empty())return res;
+	if(!(rand()%7)&&!res.empty())return res;
 	prevword[0]=-1;
 	prevword[1]=-1;
 	return "";
@@ -104,8 +104,8 @@ std::string RuleBase::randomChoice(){
 	if(serifs[0].empty())return "";
 	int t = rand()%serifs[0].size();
 	if(prevword[0]==0&&prevword[1]==t)return "";
-	prevword[0]=0;
-	prevword[1]=t;
+		prevword[0]=0;
+		prevword[1]=t;
 	return serifs[0][t];
 }
 
@@ -256,6 +256,10 @@ std::string RuleBase::replySilence(){
 					return serifs[i][t];
 				}
 			}
+		}
+		if(rand()%20==0){
+			std::string res=randomChoice();
+			if(!res.empty())return res;
 		}
 	}
 }
