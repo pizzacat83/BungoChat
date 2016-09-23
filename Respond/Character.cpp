@@ -36,3 +36,12 @@ std::string Character::Respond(const std::string& input){
 	return res.empty()?rulebase.respondRuleBase(input,words):res;*/
 	return rulebase.respondRuleBase(input,words);
 }
+
+std::string Character::ForceRespond(const std::string& input){
+	std::string res;
+	if(rulebase.nextIsMarkov()){
+		res=mtable.makeSentenceRand();
+	}
+	if(!res.empty())return res;
+	return rulebase.replySilence();
+}

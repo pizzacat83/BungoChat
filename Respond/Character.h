@@ -16,4 +16,5 @@ public:
 	~Character();
 	Character(const std::string& MTablePath, const std::string& RegexPath, const std::string& SerifPath);
     std::string Respond(const std::string& input);
+	std::string ForceRespond(const std::string& input);
 };
