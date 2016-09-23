@@ -14,6 +14,7 @@ struct regexset{
 class RuleBase
 {
 private:
+	int prevword[2];
 	std::vector<std::vector<std::string>> serifs;
 	std::vector<regexset> re;
 	void LoadRegex(const std::string& regexpath);
@@ -26,4 +27,6 @@ public:
 	RuleBase(const std::string &regexpath, const std::string &serifpath);
 	~RuleBase(void);
 	std::string respondRuleBase(const std::string& input, const std::vector<std::string>& words);
+	bool nextIsMarkov();
+	std::string replySilence();
 };
